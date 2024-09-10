@@ -42,7 +42,7 @@ class NotificationController extends AbstractController
             }
 
             $bus->dispatch(
-                new NotificationMessage($notification->getEmail(), $notification->getMessage()),
+                new NotificationMessage($notification->getId(), $notification->getEmail(), $notification->getMessage()),
                 [new DelayStamp($delay)]
             );
 
@@ -53,23 +53,6 @@ class NotificationController extends AbstractController
             'notifications' => $notifications,
             'form' => $form->createView(),
         ]);
-    }
-
-    #[Route('/send-test-email', name: 'send_test_email')]
-    public function sendTestEmail(MailerInterface $mailer): Response
-    {
-        $email = (new Email())
-            ->from('contact@alephlau.com')
-            ->to('aleph.lau@outlook.com')
-            ->subject('Test Email')
-            ->text('This is a test email sent from Symfony.');
-
-        try {
-            $mailer->send($email);
-            return new Response('Email sent successfully.');
-        } catch (\Exception $e) {
-            return new Response('Failed to send email: ' . $e->getMessage());
-        }
     }
 }
 

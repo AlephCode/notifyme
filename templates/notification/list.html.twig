@@ -1,42 +1,72 @@
-{# templates/notification/list.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Program Notifications{% endblock %}
 
 {% block body %}
-    <h1>Program Notifications</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Program Notifications</h1>
 
-    {# Formulario para programar una nueva alerta #}
-    {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.message) }}
-    {{ form_row(form.scheduledAt) }}
-    <button class="btn btn-primary">Add Notification</button>
-    {{ form_end(form) }}
+        {# Formulario para programar una nueva alerta #}
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+                <div class="form-group mb-3">
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form_label(form.message, 'Message', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.message, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.message) }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form_label(form.scheduledAt, 'Scheduled At', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.scheduledAt, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(form.scheduledAt) }}
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary btn-lg">Add Notification</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
 
-    <h2>Scheduled Notifications</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Email</th>
-            <th>Message</th>
-            <th>Scheduled At</th>
-            <th>Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for notification in notifications %}
-            <tr>
-                <td>{{ notification.email }}</td>
-                <td>{{ notification.message }}</td>
-                <td>{{ notification.scheduledAt|date('Y-m-d H:i') }}</td>
-                <td>{{ notification.status }}</td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">No notifications scheduled</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <h2 class="mb-4 text-center">Scheduled Notifications</h2>
+
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                <tr>
+                    <th scope="col">Email</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Scheduled At</th>
+                    <th scope="col">Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for notification in notifications %}
+                    <tr>
+                        <td>{{ notification.email }}</td>
+                        <td>{{ notification.message }}</td>
+                        <td>{{ notification.scheduledAt|date('Y-m-d H:i') }}</td>
+                        <td>
+                            {% if notification.status == 'sent' %}
+                                <span class="badge bg-success">Sent</span>
+                            {% elseif notification.status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                            {% else %}
+                                <span class="badge bg-warning">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">No notifications scheduled</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

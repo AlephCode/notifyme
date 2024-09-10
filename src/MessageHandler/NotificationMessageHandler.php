@@ -28,18 +28,14 @@ class NotificationMessageHandler
 
         try {
             $this->mailer->send($emailMessage);
-            $notification = $this->entityManager->getRepository(Notification::class)->findOneBy([
-                'email' => $message->getEmail()
-            ]);
+            $notification = $this->entityManager->getRepository(Notification::class)->find($message->getId());
 
             if ($notification) {
                 $notification->setStatus('sent');
                 $this->entityManager->flush();
             }
         } catch (\Exception $e) {
-            $notification = $this->entityManager->getRepository(Notification::class)->findOneBy([
-                'email' => $message->getEmail()
-            ]);
+            $notification = $this->entityManager->getRepository(Notification::class)->find($message->getId());
 
             if ($notification) {
                 $notification->setStatus('failed');
@@ -47,6 +43,7 @@ class NotificationMessageHandler
             }
         }
     }
+
 }
 
 
