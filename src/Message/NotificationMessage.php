@@ -1,8 +1,7 @@
 <?php
-
 namespace App\Message;
 
-class AlertMessage
+class NotificationMessage
 {
     private string $email;
     private string $message;

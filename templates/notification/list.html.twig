@@ -1,0 +1,42 @@
+{# templates/notification/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Program Notifications{% endblock %}
+
+{% block body %}
+    <h1>Program Notifications</h1>
+
+    {# Formulario para programar una nueva alerta #}
+    {{ form_start(form, {'attr': {'data-turbo': 'false'}}) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.message) }}
+    {{ form_row(form.scheduledAt) }}
+    <button class="btn btn-primary">Add Notification</button>
+    {{ form_end(form) }}
+
+    <h2>Scheduled Notifications</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Scheduled At</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for notification in notifications %}
+            <tr>
+                <td>{{ notification.email }}</td>
+                <td>{{ notification.message }}</td>
+                <td>{{ notification.scheduledAt|date('Y-m-d H:i') }}</td>
+                <td>{{ notification.status }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">No notifications scheduled</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

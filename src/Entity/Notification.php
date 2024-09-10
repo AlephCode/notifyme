@@ -9,7 +9,7 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: NotificationRepository::class)]
 #[ORM\Table(name: "app_notifications")]
-#[Broadcast]
+//#[Broadcast]
 class Notification
 {
     #[ORM\Id]
